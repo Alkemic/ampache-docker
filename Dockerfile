@@ -21,8 +21,6 @@ RUN apt-get update && \
 
 WORKDIR /opt/ampache
 
-USER ampache
-
 RUN echo "<?php phpinfo();" > /opt/ampache/pi.php
 
 COPY run.sh /run.sh

@@ -12,6 +12,7 @@ RUN apt-get update && \
     wget https://github.com/ampache/ampache/releases/download/${AMPACHE_VERSION}/ampache-${AMPACHE_VERSION}_all.zip \
         -O /tmp/ampache-${AMPACHE_VERSION}_all.zip && \
     unzip /tmp/ampache-${AMPACHE_VERSION}_all.zip -d /opt/ampache && \
+    chown ampache:ampache /opt/ampache && \
     rm /tmp/ampache-${AMPACHE_VERSION}_all.zip && \
     sed -i -E 's/upload_max_filesize = ([0-9]+)M/upload_max_filesize = 64M/g' /etc/php5/cli/php.ini && \
     sed -i -E 's/post_max_size = ([0-9]+)M/post_max_size = 64M/g' /etc/php5/cli/php.ini && \

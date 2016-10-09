@@ -1,4 +1,5 @@
 FROM debian:jessie
+#FROM resin/rpi-raspbian
 
 ENV AMPACHE_VERSION 3.8.2
 
@@ -13,6 +14,7 @@ RUN apt-get update && \
         -O /tmp/ampache-${AMPACHE_VERSION}_all.zip && \
     unzip /tmp/ampache-${AMPACHE_VERSION}_all.zip -d /opt/ampache && \
     chown ampache:ampache /opt/ampache && \
+    cp -rfd /opt/ampache/config/ /tmp/ampache_config && \
     rm /tmp/ampache-${AMPACHE_VERSION}_all.zip && \
     sed -i -E 's/upload_max_filesize = ([0-9]+)M/upload_max_filesize = 64M/g' /etc/php5/cli/php.ini && \
     sed -i -E 's/post_max_size = ([0-9]+)M/post_max_size = 64M/g' /etc/php5/cli/php.ini && \
@@ -21,8 +23,10 @@ RUN apt-get update && \
 
 WORKDIR /opt/ampache
 
-RUN echo "<?php phpinfo();" > /opt/ampache/pi.php
-
 COPY run.sh /run.sh
+
+VOLUME ["/media", "/opt/ampache/config", "/var/lib/mysql"]
+
+EXPOSE 8080
 
 CMD /run.sh
